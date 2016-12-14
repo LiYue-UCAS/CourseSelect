@@ -10,12 +10,19 @@
       <div class="panel panel-primary filterable">
         <div class="panel-heading">
           <% if teacher_logged_in? %><h3 class="panel-title">授课列表</h3><% end %>
-          <% if student_logged_in? %><h3 class="panel-title">已选课程</h3><% end %>
+          <% if student_logged_in? %><h3 class="panel-title">已选课程</h3><h5>
+          <%= "总学分为:" %>
+              <% sum_credit = 0 %>
+              <% @course.each do |course| %>
+                  <% sum_credit += course.credit[3..4].to_i%>
+              <% end %>
+              <%= sum_credit %>
+          </h5>
+          <% end %>
         </div>
 
         <div class="panel-body">
           <table class="table table-responsive table-condensed table-hover">
-            <thead>
             <tr>
               <th>课程编号</th>
               <th>课程名称</th>
@@ -23,7 +30,6 @@
               <th>考试方式</th>
               <th>主讲教师</th>
             </tr>
-            <%  sum_credit = 0 %>
             <tbody>
             <% @course.each do |course| %>
                 <tr>
@@ -32,7 +38,7 @@
                   <td><%= course.credit %></td>
                   <td><%= course.exam_type %></td>
                   <td><%= course.teacher.name %></td>
-                  <% sum_credit += course.credit[3...4].to_i %>
+
                   <% if teacher_logged_in? %>
                       <td><%= link_to "编辑", edit_course_url(course), class: 'btn btn-xs btn-info' %></td>
                       <% if course.open==false %>
@@ -46,7 +52,6 @@
                   <% end %>
                 </tr>
             <% end %>
-            <%= "你选修的总学分为:" %> <%= sum_credit%>
             </tbody>
           </table>
 
