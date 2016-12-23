@@ -88,16 +88,24 @@ class CoursesController < ApplicationController
 
   def select
     @course=Course.find_by_id(params[:id])#查找
+    number = @course.student_num
+    if number < @course.limit_num
+    @course.update_attribute("student_num", number + 1)
     current_user.courses<<@course
     flash={:success => "成功选择课程: #{@course.name}"}
     redirect_to courses_path, flash: flash
+    else number == @course.limit_num
+      redirect_to list_courses_path
+    end
   end
 
   def quit
     @course=Course.find_by_id(params[:id])
     current_user.courses.delete(@course)
+    number = @course.student_num
+    @course.update_attribute("student_num", number - 1)
     flash={:success => "成功退选课程: #{@course.name}"}
-    redirect_to courses_path, flash: flash #跳到下一个页面
+    redirect_to courses_path, flash: flash #跳回到course_list页面
   end
 
 
