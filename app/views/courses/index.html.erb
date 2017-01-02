@@ -22,6 +22,7 @@
               <th>课时/学分</th>
               <th>考试方式</th>
               <th>主讲教师</th>
+              <th>请求状态</th>
             </tr>
             <%  sum_credit = 0 %>
             <tbody>
@@ -32,17 +33,20 @@
                   <td><%= course.credit %></td>
                   <td><%= course.exam_type %></td>
                   <td><%= course.teacher.name %></td>
+                  <td><%= course.course_state %></td>
                   <% sum_credit += course.credit[3...4].to_i %>
                   <% if teacher_logged_in? %>
                       <td><%= link_to "编辑", edit_course_url(course), class: 'btn btn-xs btn-info' %></td>
                       <% if course.open==false %>
-                          <td><%= link_to "开通", open_course_path(course), class:'btn btn-xs btn-success'%></td>
+                          <td><%= link_to "申请开通", open_course_path(course), class:'btn btn-xs btn-success'%></td>
                       <% else %>
-                          <td><%= link_to "关闭", close_course_path(course), class:'btn btn-xs btn-warning'%></td>
+                          <td><%= link_to "申请关闭", close_course_path(course), class:'btn btn-xs btn-danger'%></td>
                       <% end %>
                       <td><%= link_to "删除", course_path(course), :method => "delete", class: 'btn btn-xs btn-danger', :data => {confirm: '确定要删除此课程?'} %></td>
                   <% elsif student_logged_in? %>
-                      <td><%= link_to "删除", quit_course_path(course), class: 'btn-sm btn-danger' %></td>
+                      <% #if course.student_num!=0 %>
+                        <td><%= link_to "删除", quit_course_path(course), class: 'btn-sm btn-danger' %></td>
+                      <% #end %>
                   <% end %>
                 </tr>
             <% end %>

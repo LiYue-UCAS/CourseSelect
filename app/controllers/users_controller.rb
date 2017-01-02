@@ -45,6 +45,57 @@ class UsersController < ApplicationController
   end
 
 
+
+
+#----------------------------admin start-----------------------------------------------
+
+  def request_index
+    @admin = current_user
+    @course = Course.find_by_sql("select * from courses where course_state like'processing%'")
+    #render plain: params[@course].inspect
+  end
+
+  def do_request
+    @admin = current_user
+    @course = Course.find_by_id(params[:id])
+  end
+
+  def do_request_update
+    @admin = current_user
+    @course = Course.find_by_id(params[:id])
+    str = params[:request_type]
+    #code = params[:course_code]
+    #render plain: code.inspect
+    if @course.course_state == "processing_open"
+      if str=="agree"
+        @course.update_attribute("open",true)
+        @course.update_attribute("course_state","agree_open")
+        @course.update_attribute("course_code",params[:course_code])
+        flash={:info => "已经成功处理请求，同意开课成功"}
+      end
+      if str=="disagree"
+        @course.update_attribute("course_state","disagree_open")
+        flash={:info => "已经成功处理请求，不同意开课成功"}
+      end
+    end
+
+    if @course.course_state == "processing_close"
+      if str=="agree"
+        @course.update_attribute("open",false)
+        @course.update_attribute("course_state","agree_close")
+        @course.update_attribute("course_code",params[:code])
+        flash={:info => "已经成功处理请求，同意关闭成功"}
+      end
+      if str=="disagree"
+        @course.update_attribute("course_state","disagree_close")
+        flash={:info => "已经成功处理请求，不同意关闭成功"}
+      end
+    end
+    redirect_to request_index_users_path, flash: flash
+  end
+
+#----------------------------admin end----------------------------------------------------------
+
 #----------------------------------- students function--------------------
 
 
