@@ -27,11 +27,20 @@ Rails.application.routes.draw do
     collection do
       get :list
       get :search1
+      get :sousuo
     end
   end
 
   resources :grades, only: [:index, :update]
-  resources :users
+  resources :users do
+    member do
+      get :do_request
+      patch :do_request_update
+    end
+    collection do
+      get :request_index
+    end
+  end
 
   get 'sessions/login' => 'sessions#new'
   post 'sessions/login' => 'sessions#create'
