@@ -71,21 +71,6 @@ class CoursesController < ApplicationController
     end
 
 
-=begin
-  def search1
-    #@course = Course.find_by_course_code(params[:])
-    @course = Course.all
-    @course = @course-current_user.courses
-    @course_open = Array.new
-    @course.each do |course|
-      if(course.open == true )
-        @course_open<<course
-      end
-    end
-    @course = @course_open
-  end
-=end
-
   def select
     @course=Course.find_by_id(params[:id])#查找
     number = @course.student_num
