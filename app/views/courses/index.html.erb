@@ -9,12 +9,7 @@
         <div class="panel-heading">
           <% if teacher_logged_in? %><h3 class="panel-title">授课列表</h3><% end %>
           <% if student_logged_in? %><h3 class="panel-title">已选课程</h3><h5>
-          <%= "总学分为:" %>
-              <% sum_credit = 0 %>
-              <% @course.each do |course| %>
-                  <% sum_credit += course.credit[3..4].to_i%>
-              <% end %>
-              <%= sum_credit %>
+
           </h5>
           <% end %>
         </div>

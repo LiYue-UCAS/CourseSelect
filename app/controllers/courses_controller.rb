@@ -64,8 +64,8 @@ class CoursesController < ApplicationController
   def list
 
     #@course = Course.paginate(:page=>params[:page],:per_page=>8)
-
-    @course=@course-current_user.courses
+    @course = Course.all
+    @course=@course - current_user.courses
     @course_open = Array.new # 定义数组类变量, []
     @course.each do |course| # 循环数组
       if(course.open == true && course.course_state == "agree_open")
@@ -100,6 +100,7 @@ class CoursesController < ApplicationController
   end
    
   #学生选课
+  #学生选课
   def select
     @course=Course.find_by_id(params[:id])#查找
     course_weeks_new = @course.course_week.split("-")
@@ -124,25 +125,27 @@ class CoursesController < ApplicationController
         end
       end
     end
-  end
-    if(!flag)
-      student_num = @course.student_num 
-      if @course.update_attribute("student_num",student_num + 1)
+    student_num = @course.student_num
+    #student_num < @course.limit_num
+    if(!flag )
+      if(student_num < @course.limit_num)
         current_user.courses<<@course
-        flash={:success => "成功选择课程: #{@course.name}"}
-      else
-        flash={:success => "失败选择课程: #{@course.name}"}
+        student_num = @course.student_num + 1
+        if @course.update_attribute("student_num",student_num)
+          flash={:success => "成功选择课程: #{@course.name}"}
+        else
+          flash={:success => "失败选择课程: #{@course.name}"}
+        end
       end
     else
       flash={:success => "冲突选择课程: #{@course.name}"}
     end
-   end
 
     redirect_to courses_path, flash: flash
-    else number == @course.limit_num
-      redirect_to list_courses_path
-    end
   end
+
+
+
 
   def quit
     @course=Course.find_by_id(params[:id])
