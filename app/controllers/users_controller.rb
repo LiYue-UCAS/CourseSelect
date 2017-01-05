@@ -38,11 +38,31 @@ class UsersController < ApplicationController
     redirect_to root_path, flash: flash
   end
 
+
+
   def destroy
     @user = User.find_by_id(params[:id])
     @user.destroy
     redirect_to users_path(new: false), flash: {success: "用户删除"}
   end
+
+  def changepass
+    @user = User.find_by_id(params[:id])
+  end
+
+  def submitpass
+    user = User.find_by_email(params[:session][:email])
+    log_in (user)
+      if user.update_attribute('password',params[:session][:password])
+        flash={:info => "更改成功"}
+      else
+        flash={:warning => "更改失败"}
+      end
+    @user = User.find_by_name('彭兆卿')
+    log_in(@user)
+    redirect_to root_path, flash: flash
+  end
+
 
 
 
@@ -172,4 +192,9 @@ class UsersController < ApplicationController
     end
   end
 
+  def admin_logged_in
+    unless admin_logged_in?
+      redirect_to root_url, flash: {danger: '请登陆'}
+    end
+  end
 end

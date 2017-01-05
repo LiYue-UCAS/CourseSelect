@@ -1,7 +1,8 @@
 class CoursesController < ApplicationController
 
   before_action :student_logged_in, only: [:select, :quit, :list]
-  before_action :teacher_logged_in, only: [:new, :create, :edit, :destroy, :update]
+  before_action :teacher_logged_in, only: [:new, :create,  :destroy]
+  #before_action :admin_logged_in, only: [:new, :create, :edit, :destroy, :update]
   before_action :logged_in, only: :index
 
   #-------------------------for teachers----------------------
@@ -15,7 +16,10 @@ class CoursesController < ApplicationController
     @course.course_state = "processing_open"
     if @course.save
       current_user.teaching_courses<<@course
-      redirect_to courses_path, flash: {success: "新课程申请提交成功，请等候管理员处理"}
+
+      @course.update_attribute("course_state", "待审核")
+      redirect_to courses_path, flash: {success: "新课程申请成功"}
+
     else
       flash[:warning] = "信息填写有误,请重试"
       render 'new'
@@ -29,14 +33,21 @@ class CoursesController < ApplicationController
   def update
     @course = Course.find_by_id(params[:id])
 
+    if admin_logged_in? && @course.update_attributes(course_params)
+    @course.update_attribute("course_state", "已通过")
+    flash={:info => "已成功开通此课程"}
 
-    if @course.update_attributes(course_params)
-      flash={:info => "更新成功,申请已经提交管理员处理"}
-    else
+    elsif @course.update_attributes(course_params)
+      @course.update_attribute("course_state", "待审核")
+      flash={:info => "更新成功"}
+
+      else
+
       flash={:warning => "更新失败"}
     end
     redirect_to courses_path, flash: flash
   end
+
 
   def destroy
     @course=Course.find_by_id(params[:id])
@@ -59,7 +70,23 @@ class CoursesController < ApplicationController
     redirect_to courses_path, flash: {:success => "已成功将该关课申请提交到管理员处理"}
   end
 
+  def agree
+    @course = Course.find_by_id(params[:id])
+    @course.update_attribute("course_state", '已通过')
+    redirect_to courses_path, flash: {:success => "已同意开设此课程"}
+  end
+
+  def disagree
+    @course = Course.find_by_id(params[:id])
+    @course.update_attribute("course_state", '已驳回')
+    redirect_to courses_path, flash: {:success => "已驳回此课程申请"}
+  end
+
+
+
   #-------------------------for students----------------------
+
+
 
   def list
 
@@ -68,8 +95,8 @@ class CoursesController < ApplicationController
     @course=@course - current_user.courses
     @course_open = Array.new # 定义数组类变量, []
     @course.each do |course| # 循环数组
-      if(course.open == true && course.course_state == "agree_open")
-      #if(course.open == true )
+
+      if(course.open == true && course.course_state == "已通过")
 
         @course_open<< course #追加，写进数组
       end
@@ -204,6 +231,10 @@ class CoursesController < ApplicationController
   #-------------------------for both teachers and students----------------------
 
   def index
+
+   
+    @course=Course.where("course_state='待审核'") if admin_logged_in?
+
     if teacher_logged_in?
     @course=current_user.teaching_courses.paginate(:page=>params[:page],:per_page=>5)
 
