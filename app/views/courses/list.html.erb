@@ -2,7 +2,6 @@
   <div class="row">
     <div class="col-sm-2">
       <%= render "shared/sidenav" %>
-
     </div>
     <div class="col-sm-10">
       <div class="panel panel-primary">
@@ -46,31 +45,25 @@
             </thead>
             <tbody>
 
-            <% @course.each do |course| %>
+            <% (params[:pageStart]..params[:pageEnd]).each do |i| %>
                 <tr>
-                  <td><%= course.course_code %></td>
-                  <td><%= course.name %></td>
-                  <td><%= course.credit %></td>
-                  <td><% if course.student_num==course.limit_num %>
-                      <div style="color: #ff0000">
-                         <%= course.limit_num %>
-                      </div>
-                      <% else %>
-                        <%= course.limit_num %>
-                      <% end %>
-                  </td>
-                  <td><% if course.student_num==course.limit_num %>
-                        <div style="color: #ff0000">
-                          <%= course.student_num %>
-                        </div>
-                    <% else %>
-                        <%= course.student_num %>
-                    <% end %>
-                  </td>
-                  <td><%= course.course_type %></td>
-                  <td><%= course.teaching_type %></td>
-                  <td><%= course.exam_type %></td>
-                  <td><%= course.teacher.name %></td>
+
+
+                  <td><%= i+1 %></td>
+                  <td><%= @course[i].course_code %></td>
+                  <td><%= @course[i].name %></td>
+                  <td><%= @course[i].credit %></td>
+                  <td><%= @course[i].limit_num %></td>
+                  <td><%= @course[i].student_num %></td>
+                  <td><%= @course[i].course_type %></td>
+                  <td><%= @course[i].teaching_type %></td>
+                  <td><%= @course[i].exam_type %></td>
+                  <td><%= @course[i].teacher.name %></td>
+                   <% if @course[i].student_num != @course[i].limit_num %>
+                    <td><%= link_to "加入课程", select_course_path(@course[i]), class: 'btn-sm btn-info' %></td>
+                  <% else %>
+                    <td>课程已满</td>
+                  <% end %>
 
                   <% if (course.student_num == course.limit_num) %>
                   <td>
@@ -83,6 +76,31 @@
             <% end %>
             </tbody>
           </table>
+
+          <%#----------分页---------%>
+          <div id="nav">
+            <input type="hidden" name="page" value=<%= params[:page]%>>
+            <nav style="text-align: center">
+              <ul class="pagination">
+                <% if params[:page].to_i == 1%>
+                    <li class="disabled"><a>首页</a></li>
+                    <li class="disabled"><a>上一页</a></li>
+                <% else %>
+                    <li><a href=<%= list_courses_path  + '?page=1'%> >首页</a></li>
+                    <li><a href=<%= list_courses_path  + '?page='+(params[:page].to_i - 1).to_s %>>上一页</a></li>
+                <% end %>
+                <li class="disabled"><a>当前为第<%= params[:page] %>页 共<%= params[:pageNum] %>页</a></li>
+                <% if params[:page].to_i == params[:pageNum]%>
+                    <li class="disabled"><a>下一页</a></li>
+                    <li class="disabled"><a>末页</a></li>
+                <% else %>
+                    <li><a href=<%=  list_courses_path  + '?page=' + (params[:page].to_i + 1).to_s %> >下一页</a></li>
+                    <li><a href=<%=  list_courses_path + '?page=' + params[:pageNum].to_s %>>末页</a></li>
+                <% end %>
+              </ul>
+            </nav>
+          </div>
+
         </div>
       </div>
     </div>
