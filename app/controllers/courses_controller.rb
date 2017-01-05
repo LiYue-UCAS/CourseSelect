@@ -63,7 +63,8 @@ class CoursesController < ApplicationController
 
   def list
     @course=Course.all
-    #@course = Course.where("open=true")
+    #@course = Course.paginate(:page=>params[:page],:per_page=>8)
+
     @course=@course-current_user.courses
     @course_open = Array.new # 定义数组类变量, []
     @course.each do |course| # 循环数组
@@ -72,23 +73,31 @@ class CoursesController < ApplicationController
       end
     end
     @course = @course_open
-    end
 
 
-=begin
-  def search1
-    #@course = Course.find_by_course_code(params[:])
-    @course = Course.all
-    @course = @course-current_user.courses
-    @course_open = Array.new
-    @course.each do |course|
-      if(course.open == true )
-        @course_open<<course
-      end
+    #------------分页---------------------
+    total = @course.count
+    params[:total] = total
+    if params[:page] == nil
+      params[:page] = 1  #进行初始化
     end
-    @course = @course_open
-  end
-=end
+    if total % $PageSize == 0
+      params[:pageNum] = total / $PageSize
+    else
+      params[:pageNum] = total / $PageSize + 1
+    end
+
+    #计算分页的开始和结束位置
+    params[:pageStart] = (params[:page].to_i - 1) * $PageSize
+
+    if params[:pageStart].to_i + $PageSize <= params[:total].to_i
+      params[:pageEnd] = params[:pageStart].to_i + $PageSize - 1
+    else
+      params[:pageEnd] = params[:total].to_i - 1  #最后一页
+    end
+    #---------------------------------------------------------------------
+    end
+
 
   #学生选课
   def select
@@ -187,8 +196,20 @@ class CoursesController < ApplicationController
   #-------------------------for both teachers and students----------------------
 
   def index
-    @course=current_user.teaching_courses if teacher_logged_in?
-    @course=current_user.courses if student_logged_in?
+    if teacher_logged_in?
+    @course=current_user.teaching_courses.paginate(:page=>params[:page],:per_page=>5)
+
+    end
+    if student_logged_in?
+    @course=current_user.courses.paginate(:page=>params[:page],:per_page=>5)
+    @courses = current_user.courses
+    @sum_time = 0
+    @sum_credit = 0
+    @courses.each do |courses|
+     @sum_credit += courses.credit[3...4].to_i
+      @sum_time += courses.credit[0...1].to_i
+    end
+    end
   end
 
   def create_course_code

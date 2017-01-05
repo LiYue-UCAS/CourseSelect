@@ -1,10 +1,8 @@
 <div class="container-fluid">
   <div class="row">
-
     <div class="col-sm-2">
       <%= render "shared/sidenav" %>
     </div>
-
     <div class="col-sm-10">
 
       <div class="panel panel-primary filterable">
@@ -24,7 +22,6 @@
               <th>主讲教师</th>
               <th>请求状态</th>
             </tr>
-            <%  sum_credit = 0 %>
             <tbody>
             <% @course.each do |course| %>
                 <tr>
@@ -33,8 +30,6 @@
                   <td><%= course.credit %></td>
                   <td><%= course.exam_type %></td>
                   <td><%= course.teacher.name %></td>
-                  <td><%= course.course_state %></td>
-                  <% sum_credit += course.credit[3...4].to_i %>
                   <% if teacher_logged_in? %>
                       <td><%= link_to "编辑", edit_course_url(course), class: 'btn btn-xs btn-info' %></td>
                       <% if course.open==false %>
@@ -50,10 +45,21 @@
                   <% end %>
                 </tr>
             <% end %>
-            <%= "你选修的总学分为:" %> <%= sum_credit%>
-            </tbody>
-          </table>
 
+            </tbody>
+            <% if student_logged_in? %>
+                <%= "你选修的总学分为:" %>
+               <%= @sum_credit %>
+                <br>
+                <%= "你选修的总课时为:" %>
+                <%= @sum_time %>
+
+            <% end %>
+            <br>
+
+
+          </table>
+          <%= will_paginate @course %>
         </div>
       </div>
     </div>
