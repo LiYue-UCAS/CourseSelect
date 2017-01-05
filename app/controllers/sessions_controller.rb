@@ -10,7 +10,11 @@ class SessionsController < ApplicationController
       if user.first == false
         render "users/edit"
       else
+        if !user.admin
         redirect_to root_url, :flash => flash
+        else
+          redirect_to request_index_users_url, :flash => flash
+        end
       end
     else
       flash= {:danger => '账号或密码错误'}

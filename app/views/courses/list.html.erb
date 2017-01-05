@@ -6,9 +6,28 @@
     <div class="col-sm-10">
       <div class="panel panel-primary">
         <div class="panel-heading">
-          <h3 class="panel-title">选修课程</h3>
+          <h3 class="panel-title">选修课程</h3><br>
+
         </div>
+
+        <form action="sousuo" method="get">
+
+          <select id="search_type" name="search_type">
+            <option value="课程名称" selected="selected">课程名称</option>
+            <option value="课程编号">课程编号</option>
+            <option value="课程类型">课程类型</option>
+            <option value="课程学分">课程学分</option>
+            <option value="上课周数">上课周数</option>
+            <option value="上课时间">上课时间</option>
+            <option value="考试类型">考试类型</option>
+          </select>
+
+          <input type="text" id="search" name="course_search" >
+          <input type="submit" value="查询" >
+        </form>
+
         <div class="panel-body" style="min-height: 450px">
+
           <table class="table table-striped table-hover">
             <thead>
 
@@ -29,6 +48,7 @@
 
             <% (params[:pageStart]..params[:pageEnd]).each do |i| %>
                 <tr>
+
                   <td><%= i+1 %></td>
                   <td><%= @course[i].course_code %></td>
                   <td><%= @course[i].name %></td>
@@ -39,7 +59,12 @@
                   <td><%= @course[i].teaching_type %></td>
                   <td><%= @course[i].exam_type %></td>
                   <td><%= @course[i].teacher.name %></td>
-                  <td><%= link_to "加入课程", select_course_path(@course[i]), class: 'btn-sm btn-info' %></td>
+                   <% if course.student_num != course.limit_num %>
+                    <td><%= link_to "加入课程", select_course_path(@course[i]), class: 'btn-sm btn-info' %></td>
+                  <% else %>
+                    <td>课程已满</td>
+                  <% end %>
+            
 
                 </tr>
             <% end %>
