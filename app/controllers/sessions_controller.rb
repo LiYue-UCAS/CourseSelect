@@ -14,7 +14,7 @@ class SessionsController < ApplicationController
       end
     else
       flash= {:danger => '账号或密码错误'}
-      redirect_to root_url, :flash => flash
+      redirect_to sessions_login_path, :flash => flash
     end
 
 

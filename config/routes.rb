@@ -14,7 +14,7 @@ Rails.application.routes.draw do
   # Example resource route (maps HTTP verbs to controller actions automatically):
   #   resources :products
 
-  mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
+ # mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
   root 'homes#index'
 
   resources :courses do
@@ -23,19 +23,36 @@ Rails.application.routes.draw do
       get :quit
       get :open
       get :close
+      get :agree
+      get :adminedit
+      get :disagree
+
     end
     collection do
       get :list
       get :search1
+
     end
   end
 
   resources :grades, only: [:index, :update]
-  resources :users
+  resources :users do
+    collection do
+
+    end
+    member do
+      get :changepass
+      get :submitpass
+
+    end
+  end
+
+
 
   get 'sessions/login' => 'sessions#new'
   post 'sessions/login' => 'sessions#create'
   delete 'sessions/logout' => 'sessions#destroy'
+
 
 
   # Example resource route with options:

@@ -8,7 +8,10 @@
             <a data-toggle="collapse" data-parent="#accordion" href="#CourseCollapse"><span class="glyphicon glyphicon-user"></span>
               课程管理</a>
         <% end %>
-
+        <% if admin_logged_in? %>
+            <a data-toggle="collapse" data-parent="#accordion" href="#CourseCollapse"><span class="glyphicon glyphicon-user"></span>
+              处理请求</a>
+        <% end %>
         <% if student_logged_in? %>
             <a data-toggle="collapse" data-parent="#accordion" href="#CourseCollapse"><span class="glyphicon glyphicon-user"></span>
               选修课程</a>
@@ -30,6 +33,21 @@
             <li class="list-group-item">
               <%= link_to new_course_path do %>
                   <span class="glyphicon glyphicon-chevron-right"></span> 创建新课程
+              <% end %>
+            </li>
+        <% end %>
+
+        <% if admin_logged_in? %>
+            <li class="list-group-item">
+              <%= link_to courses_path do %>
+                  <span class="glyphicon glyphicon-chevron-right"></span> 待审核课程申请
+                  <span class="label label-info pull-right"><%= Course.where("course_state='待审核'").length %></span>
+              <% end %>
+            </li>
+            <li class="list-group-item">
+
+              <%= link_to changepass_user_path(current_user) do %>
+                  <span class="glyphicon glyphicon-chevron-right"></span> 重置用户密码
               <% end %>
             </li>
         <% end %>
@@ -60,7 +78,7 @@
       </ul>
     </div>
   </div>
-
+  <% if !admin_logged_in?%>
   <div class="panel panel-default">
     <div class="panel-heading">
       <h4 class="panel-title">
@@ -101,4 +119,5 @@
       </div>
     </div>
   </div>
+  <% end %>
 </div>

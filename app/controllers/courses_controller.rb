@@ -1,7 +1,8 @@
 class CoursesController < ApplicationController
 
   before_action :student_logged_in, only: [:select, :quit, :list]
-  before_action :teacher_logged_in, only: [:new, :create, :edit, :destroy, :update]
+  before_action :teacher_logged_in, only: [:new, :create,  :destroy]
+  #before_action :admin_logged_in, only: [:new, :create, :edit, :destroy, :update]
   before_action :logged_in, only: :index
 
   #-------------------------for teachers----------------------
@@ -14,6 +15,7 @@ class CoursesController < ApplicationController
     @course = Course.new(course_params)
     if @course.save
       current_user.teaching_courses<<@course
+      @course.update_attribute("course_state", "待审核")
       redirect_to courses_path, flash: {success: "新课程申请成功"}
     else
       flash[:warning] = "信息填写有误,请重试"
@@ -27,13 +29,20 @@ class CoursesController < ApplicationController
 
   def update
     @course = Course.find_by_id(params[:id])
-    if @course.update_attributes(course_params)
+    if admin_logged_in? && @course.update_attributes(course_params)
+    @course.update_attribute("course_state", "已通过")
+    flash={:info => "已成功开通此课程"}
+
+    elsif @course.update_attributes(course_params)
+      @course.update_attribute("course_state", "待审核")
       flash={:info => "更新成功"}
-    else
+
+      else
       flash={:warning => "更新失败"}
     end
     redirect_to courses_path, flash: flash
   end
+
 
   def destroy
     @course=Course.find_by_id(params[:id])
@@ -55,7 +64,23 @@ class CoursesController < ApplicationController
     redirect_to courses_path, flash: {:success => "已成功关闭本课程"}
   end
 
+  def agree
+    @course = Course.find_by_id(params[:id])
+    @course.update_attribute("course_state", '已通过')
+    redirect_to courses_path, flash: {:success => "已同意开设此课程"}
+  end
+
+  def disagree
+    @course = Course.find_by_id(params[:id])
+    @course.update_attribute("course_state", '已驳回')
+    redirect_to courses_path, flash: {:success => "已驳回此课程申请"}
+  end
+
+
+
   #-------------------------for students----------------------
+
+
 
   def list
     @course=Course.all
@@ -63,7 +88,7 @@ class CoursesController < ApplicationController
     @course=@course-current_user.courses
     @course_open = Array.new # 定义数组类变量, []
     @course.each do |course| # 循环数组
-      if(course.open == true)
+      if(course.open == true && course.course_state == "已通过")
         @course_open<< course #追加，写进数组
       end
     end
@@ -108,6 +133,7 @@ class CoursesController < ApplicationController
   def index
     @course=current_user.teaching_courses if teacher_logged_in?
     @course=current_user.courses if student_logged_in?
+    @course=Course.where("course_state='待审核'") if admin_logged_in?
   end
 
 

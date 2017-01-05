@@ -23,6 +23,7 @@
               <th>授课方式</th>
               <th>考试方式</th>
               <th>主讲教师</th>
+              <th>课程信息</th>
 
             </tr>
             </thead>
@@ -39,6 +40,17 @@
                   <td><%= course.teaching_type %></td>
                   <td><%= course.exam_type %></td>
                   <td><%= course.teacher.name %></td>
+                  <td><button type="link_to" class='btn-sm btn-link' title="课程信息"
+                  data-container="body" data-toggle="popover" data-placement="top"
+                  data-content=<%= course.teacher.name %>>
+                    查看信息
+                  </button></td>
+                  <script>
+                    $(function (){
+                      $("[data-toggle='popover']").popover();
+                    });
+                  </script>
+
                   <td><%= link_to "加入课程", select_course_path(course), class: 'btn-sm btn-info' %></td>
 
                 </tr>
