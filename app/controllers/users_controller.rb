@@ -64,8 +64,6 @@ class UsersController < ApplicationController
     @admin = current_user
     @course = Course.find_by_id(params[:id])
     str = params[:request_type]
-    #code = params[:course_code]
-    #render plain: code.inspect
     if @course.course_state == "processing_open"
       if str=="agree"
         @course.update_attribute("open",true)
