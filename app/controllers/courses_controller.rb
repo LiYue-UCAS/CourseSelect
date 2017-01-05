@@ -62,7 +62,7 @@ class CoursesController < ApplicationController
   #-------------------------for students----------------------
 
   def list
-    @course=Course.all
+
     #@course = Course.paginate(:page=>params[:page],:per_page=>8)
 
     @course=@course-current_user.courses
@@ -70,6 +70,7 @@ class CoursesController < ApplicationController
     @course.each do |course| # 循环数组
       if(course.open == true && course.course_state == "agree_open")
       #if(course.open == true )
+
         @course_open<< course #追加，写进数组
       end
     end
@@ -90,16 +91,14 @@ class CoursesController < ApplicationController
 
     #计算分页的开始和结束位置
     params[:pageStart] = (params[:page].to_i - 1) * $PageSize
-
     if params[:pageStart].to_i + $PageSize <= params[:total].to_i
       params[:pageEnd] = params[:pageStart].to_i + $PageSize - 1
     else
       params[:pageEnd] = params[:total].to_i - 1  #最后一页
     end
     #---------------------------------------------------------------------
-    end
-
-
+  end
+   
   #学生选课
   def select
     @course=Course.find_by_id(params[:id])#查找
@@ -125,11 +124,11 @@ class CoursesController < ApplicationController
         end
       end
     end
-
+  end
     if(!flag)
-      current_user.courses<<@course
-      student_num = @course.student_num + 1
-      if @course.update_attribute("student_num",student_num)
+      student_num = @course.student_num 
+      if @course.update_attribute("student_num",student_num + 1)
+        current_user.courses<<@course
         flash={:success => "成功选择课程: #{@course.name}"}
       else
         flash={:success => "失败选择课程: #{@course.name}"}
@@ -137,18 +136,23 @@ class CoursesController < ApplicationController
     else
       flash={:success => "冲突选择课程: #{@course.name}"}
     end
+   end
 
     redirect_to courses_path, flash: flash
+    else number == @course.limit_num
+      redirect_to list_courses_path
+    end
   end
 
   def quit
     @course=Course.find_by_id(params[:id])
     current_user.courses.delete(@course)
+
     student_num = @course.student_num - 1
     if @course.update_attribute("student_num",student_num)
       flash={:success => "成功退选课程: #{@course.name}"}
     else
-      flash={:success => "失败退选课程: #{@course.name}"}
+      flash={:success => "退选课程: #{@course.name}失败"}
     end
     redirect_to courses_path, flash: flash #跳到下一个页面
   end
