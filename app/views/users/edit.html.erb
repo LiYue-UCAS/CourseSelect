@@ -1,100 +1,66 @@
-<%= form_for @course, html: {class: 'form-horizontal', role: 'form'} do |f| %>
-    <%= render 'shared/error_messages', :object => @course %>
+<div class="row">
+  <div class="col-sm-offset-4 col-sm-4">
+    <div class="panel panel-info">
+      <div class="panel-heading">
+        <h4>编辑个人信息</h4>
+      </div>
+      <div class="panel-body">
 
-    <div class="form-group">
-      <%= f.label "课程名", class: 'col-sm-3 control-label' %>
-      <div class="col-sm-9">
-        <div class="input-group">
-          <div class="input-group-addon"><span class="glyphicon glyphicon-arrow-right"></span></div>
-          <%= f.text_field :name, class: 'form-control', placeholder: "输入课程名" %>
-        </div>
+        <%= form_for current_user, html: {role: 'form'} do |f| %>
+            <%= render 'shared/error_messages', :object => current_user %>
+            <div class="form-group">
+              <div class="input-group">
+                <div class="input-group-addon"><span class="glyphicon glyphicon-user"></span></div>
+                <%= f.text_field :name, class: 'form-control' %>
+              </div>
+            </div>
+
+            <div class="form-group">
+
+              <div class="input-group">
+                <div class="input-group-addon"><span class="glyphicon glyphicon-envelope"></span></div>
+                <%= f.text_field :email, class: 'form-control' %>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="input-group">
+                <div class="input-group-addon"><span class="glyphicon glyphicon-home"></span></div>
+                <%= f.text_field :major, class: 'form-control' %>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="input-group">
+                <div class="input-group-addon"><span class="glyphicon glyphicon-check"></span></div>
+                <%= f.text_field :department, class: 'form-control' %>
+              </div>
+            </div>
+
+
+            <div class="form-group">
+              <div class="input-group">
+                <div class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></div>
+                <%= f.password_field :password, class: 'form-control', placeholder: "输入新密码" %>
+              </div>
+            </div>
+
+            <div>
+              <div class="input-group">
+                <div class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></div>
+                <%= f.password_field :password_confirmation, class: 'form-control', placeholder: "再次输入密码" %>
+              </div>
+            </div>
+
+            <br>
+
+            <%= f.submit '更新', class: "btn btn-info btn-block" %>
+            <%= link_to '取消', root_path, :class => "btn btn-default btn-block" %>
+
+            <br>
+
+        <% end %>
       </div>
     </div>
-
-    <div class="form-group">
-      <%= f.label "课程属性", class: 'col-sm-3 control-label' %>
-      <div class="col-sm-9">
-        <div class="input-group">
-          <div class="input-group-addon"><span class="glyphicon glyphicon-arrow-right"></span></div>
-          <%= f.text_field :course_type, class: 'form-control', placeholder: "输入课程属性" %>
-        </div>
-      </div>
-    </div>
-
-    <div class="form-group">
-      <%= f.label "授课方式", class: 'col-sm-3 control-label' %>
-      <div class="col-sm-9">
-        <div class="input-group">
-          <div class="input-group-addon"><span class="glyphicon glyphicon-arrow-right"></span></div>
-          <%= f.text_field :teaching_type, class: 'form-control', placeholder: "输入授课方式" %>
-        </div>
-      </div>
-    </div>
-
-    <div class="form-group">
-      <%= f.label "考试方式", class: 'col-sm-3 control-label' %>
-      <div class="col-sm-9">
-        <div class="input-group">
-          <div class="input-group-addon"><span class="glyphicon glyphicon-arrow-right"></span></div>
-          <%= f.text_field :exam_type, class: 'form-control', placeholder: "输入考试方式" %>
-        </div>
-      </div>
-    </div>
-
-    <div class="form-group">
-      <%= f.label "限选人数", class: 'col-sm-3 control-label' %>
-      <div class="col-sm-9">
-        <div class="input-group">
-          <div class="input-group-addon"><span class="glyphicon glyphicon-arrow-right"></span></div>
-          <%= f.text_field :limit_num, class: 'form-control', placeholder: "输入限选人数" %>
-        </div>
-      </div>
-    </div>
-
-    <div class="form-group">
-      <%= f.label "课时学分", class: 'col-sm-3 control-label' %>
-      <div class="col-sm-9">
-        <div class="input-group">
-          <div class="input-group-addon"><span class="glyphicon glyphicon-arrow-right"></span></div>
-          <%= f.text_field :credit, class: 'form-control', placeholder: "输入课时学分" %>
-        </div>
-      </div>
-    </div>
-
-
-    <div class="form-group">
-      <%= f.label "教室", class: 'col-sm-3 control-label' %>
-      <div class="col-sm-9">
-        <div class="input-group">
-          <div class="input-group-addon"><span class="glyphicon glyphicon-arrow-right"></span></div>
-          <%= f.text_field :class_room, class: 'form-control', placeholder: "输入教室" %>
-        </div>
-      </div>
-    </div>
-
-    <div class="form-group">
-      <%= f.label "上课周数", class: 'col-sm-3 control-label' %>
-      <div class="col-sm-9">
-        <div class="input-group">
-          <div class="input-group-addon"><span class="glyphicon glyphicon-arrow-right"></span></div>
-          <%= f.text_field :course_week, class: 'form-control', placeholder: "输入课时学分" %>
-        </div>
-      </div>
-    </div>
-
-    <div class="form-group">
-      <%= f.label "上课时间", class: 'col-sm-3 control-label' %>
-      <div class="col-sm-9">
-        <div class="input-group">
-          <div class="input-group-addon"><span class="glyphicon glyphicon-arrow-right"></span></div>
-          <%= f.text_field :course_time, class: 'form-control', placeholder: "输入课时学分" %>
-        </div>
-      </div>
-    </div>
-
-    <!--<input type="hidden" name="course_state" id="course_state" value="processing">-->
-
-    <%= f.submit '提交', class: "btn btn-success btn-block" %>
-    <%= link_to '取消', courses_path, :class => "btn btn-default btn-block" %>
-
-<% end %>
+  </div>
+</div>

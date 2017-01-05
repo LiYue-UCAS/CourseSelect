@@ -116,7 +116,8 @@
                             <div class="input-group">
                               <div class="input-group-addon"><span class="glyphicon glyphicon-arrow-right"></span></div>
                               <%= f.label @course.class_room, class: 'form-control', placeholder: "输入教室" %>
-                              <% if @flag_conflict==true %>
+
+                              <% if @flag_conflict == true %>
                                   <div style="color:#ff0000">有冲突</div>
                               <% end %>
                             </div>

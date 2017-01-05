@@ -69,6 +69,7 @@ class CoursesController < ApplicationController
     @course_open = Array.new # 定义数组类变量, []
     @course.each do |course| # 循环数组
       if(course.open == true && course.course_state == "agree_open")
+      #if(course.open == true )
         @course_open<< course #追加，写进数组
       end
     end

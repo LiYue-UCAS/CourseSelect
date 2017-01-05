@@ -59,7 +59,7 @@
                   <td><%= @course[i].teaching_type %></td>
                   <td><%= @course[i].exam_type %></td>
                   <td><%= @course[i].teacher.name %></td>
-                   <% if course.student_num != course.limit_num %>
+                   <% if @course[i].student_num != @course[i].limit_num %>
                     <td><%= link_to "加入课程", select_course_path(@course[i]), class: 'btn-sm btn-info' %></td>
                   <% else %>
                     <td>课程已满</td>
