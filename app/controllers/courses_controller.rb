@@ -191,6 +191,9 @@ class CoursesController < ApplicationController
     @course=current_user.courses if student_logged_in?
   end
 
+  def create_course_code
+    @course = Course.find_by_id(params[:id])
+  end
 
   private
 

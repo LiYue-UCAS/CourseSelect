@@ -23,6 +23,7 @@ Rails.application.routes.draw do
       get :quit
       get :open
       get :close
+      get :create_course_code
     end
     collection do
       get :list
