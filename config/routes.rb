@@ -29,6 +29,7 @@ Rails.application.routes.draw do
       get :disagree
 
       get :create_course_code
+      get :courseinfo
 
     end
     collection do
@@ -43,26 +44,19 @@ Rails.application.routes.draw do
   resources :grades, only: [:index, :update]
   resources :users do
 
-    collection do
-
-    end
     member do
       get :changepass
       get :submitpass
-
-    end
-  end
-
-
-
-    member do
       get :do_request
       patch :do_request_update
+
     end
     collection do
       get :request_index
     end
+
   end
+
 
 
   get 'sessions/login' => 'sessions#new'

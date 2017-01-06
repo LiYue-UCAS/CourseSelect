@@ -42,6 +42,7 @@
                     <td><%= course.teaching_type %></td>
                     <td><%= course.exam_type %></td>
                     <td><%= course.teacher.name %></td>
+                    <td><%= link_to  "查看详细信息",courseinfo_course_path(course), :class=>"glyphicon" %></td>
                     <% if course.student_num != course.limit_num %>
                         <td><%= link_to "加入课程", select_course_path(course), class: 'btn-sm btn-info' %></td>
                     <% else %>

@@ -17,32 +17,7 @@
               选修课程</a>
         <% end %>
 
-        <% if admin_logged_in? %>
-            <a data-toggle="collapse" data-parent="#accordion" href="#CourseCollapse"><span class="glyphicon glyphicon-user"></span>
-              管理员功能</a>
-            </br></br>
-            <li class="list-group-item">
-              <%= link_to request_index_users_path do %>
-                  <span class="glyphicon glyphicon-chevron-right"></span> 请求处理
-              <% end %>
-            </li>
-            <li class="list-group-item">
-              <%= link_to new_course_path do %>
-                  <span class="glyphicon glyphicon-chevron-right"></span> 账户管理
-              <% end %>
-            </li>
-            <li class="list-group-item">
-              <%= link_to new_course_path do %>
-                  <span class="glyphicon glyphicon-chevron-right"></span> 课程管理
-              <% end %>
-            </li>
-            <li class="list-group-item">
-              <%= link_to new_course_path do %>
-                  <span class="glyphicon glyphicon-chevron-right"></span> 管理员账户管理
-              <% end %>
-            </li>
 
-        <% end %>
 
       </h4>
     </div>

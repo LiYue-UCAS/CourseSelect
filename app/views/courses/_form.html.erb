@@ -1,3 +1,16 @@
+<head>
+  <script>
+    function create_code(){
+      //var code_text = document.getElementById("course_code");
+      //var code_button = document.getElementById("course_code_button");
+      var day = Date.parse(new Date());
+      document.getElementById("course_code").value = "<%=@code %>";
+    }
+  </script>
+</head>
+
+
+
 <%= form_for @course, html: {class: 'form-horizontal', role: 'form'} do |f| %>
     <%= render 'shared/error_messages', :object => @course %>
 
@@ -91,18 +104,76 @@
         </div>
       </div>
     </div>
-
-
-    <% if admin_logged_in? %>
     <div class="form-group">
-      <%= f.label "课程编号", class: 'col-sm-3 control-label' %>
+      <%= f.label "预修课程", class: 'col-sm-3 control-label' %>
       <div class="col-sm-9">
         <div class="input-group">
           <div class="input-group-addon"><span class="glyphicon glyphicon-arrow-right"></span></div>
-          <%= f.text_field :course_code, class: 'form-control', placeholder: "输入课程编号" %>
+          <%= f.text_field :pre_course, class: 'form-control', placeholder: "输入预修课程" %>
         </div>
       </div>
     </div>
+
+
+    <div class="form-group">
+      <%= f.label "教材", class: 'col-sm-3 control-label' %>
+      <div class="col-sm-9">
+        <div class="input-group">
+          <div class="input-group-addon"><span class="glyphicon glyphicon-arrow-right"></span></div>
+          <%= f.text_field :textbook, class: 'form-control', placeholder: "输入教材内容" %>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <%= f.label "教学目的", class: 'col-sm-3 control-label' %>
+      <div class="col-sm-9">
+        <div class="input-group">
+          <div class="input-group-addon"><span class="glyphicon glyphicon-arrow-right"></span></div>
+          <%= f.text_area :course_purpose, class: 'form-control', placeholder: "输入教学目的" %>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="form-group">
+      <%= f.label "教师简介", class: 'col-sm-3 control-label' %>
+      <div class="col-sm-9">
+        <div class="input-group">
+          <div class="input-group-addon"><span class="glyphicon glyphicon-arrow-right"></span></div>
+          <%= f.text_area :teacher_info, class: 'form-control', placeholder: "输入教师简介" %>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <%= f.label "主要内容", class: 'col-sm-3 control-label' %>
+      <div class="col-sm-9">
+        <div class="input-group">
+          <div class="input-group-addon"><span class="glyphicon glyphicon-arrow-right"></span></div>
+          <%= f.text_area :course_info, class: 'form-control', placeholder: "输入主要内容" %>
+        </div>
+      </div>
+    </div>
+
+
+    <% if admin_logged_in? %>
+
+        <div class="form-group">
+
+          <%= f.label "课程编号", class: 'col-sm-3 control-label' %>
+          <div class="col-sm-9">
+            <div class="col-xl-5">
+            <div class="input-group">
+
+              <div class="input-group-addon"><span class="glyphicon glyphicon-arrow-right"></span></div>
+              <input type="text" class="form-control" id="course_code" name="course_code" value="请输入课程编号">
+                </div>
+              <input type="button" id="course_code_button" name="course_code_button" value="生成课程编号" onclick="create_code()" >
+            </div>
+          </div>
+        </div>
+
     <% end %>
 
     <%= f.submit '提交', class: "btn btn-success btn-block" %>

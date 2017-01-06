@@ -13,7 +13,7 @@ class SessionsController < ApplicationController
         if !user.admin
         redirect_to root_url, :flash => flash
         else
-          redirect_to request_index_users_url, :flash => flash
+          redirect_to root_url, :flash => flash
         end
       end
     else

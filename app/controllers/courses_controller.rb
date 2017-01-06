@@ -28,6 +28,17 @@ class CoursesController < ApplicationController
 
   def edit
     @course=Course.find_by_id(params[:id])
+    courses = Course.all
+
+    flag = false
+    while flag==false
+      time = Time.now.to_i.to_s[-4,4]
+      @code = "091M"+time+"H"
+      courseAll = Course.find_by_sql("Select count(*) from courses where course_code = '#{@code}'")
+      if courseAll != 0
+        flag = true
+      end
+    end
   end
 
   def update
@@ -97,9 +108,14 @@ class CoursesController < ApplicationController
     @course.each do |course| # 循环数组
 
       if(course.open == true && course.course_state == "已通过")
-
+        if !course.limit_num
+          course.update_attribute('limit_num',400)
+        end
         @course_open<< course #追加，写进数组
       end
+    end
+    def courseinfo
+      @course = Course.find_by_id(params[:id])
     end
     @course = @course_open
 
@@ -152,10 +168,11 @@ class CoursesController < ApplicationController
         end
       end
     end
-    student_num = @course.student_num
+
     #student_num < @course.limit_num
-    if(!flag )
-      if(student_num < @course.limit_num)
+    if(!flag)
+      student_num = @course.student_num
+      if student_num < @course.limit_num
         current_user.courses<<@course
         student_num = @course.student_num + 1
         if @course.update_attribute("student_num",student_num)
@@ -179,6 +196,10 @@ class CoursesController < ApplicationController
     current_user.courses.delete(@course)
 
     student_num = @course.student_num - 1
+    if student_num < 0
+      student_num=0
+    end
+
     if @course.update_attribute("student_num",student_num)
       flash={:success => "成功退选课程: #{@course.name}"}
     else
@@ -280,7 +301,8 @@ class CoursesController < ApplicationController
 
   def course_params
     params.require(:course).permit(:course_code, :name, :course_type, :teaching_type, :exam_type,
-                                   :credit, :limit_num, :class_room, :course_time, :course_week)
+                                   :credit, :limit_num, :class_room, :course_time, :course_week,
+                                   :course_purpose, :pre_course, :textbook, :course_info, :teacher_info)
   end
 
   end

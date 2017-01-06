@@ -1,0 +1,167 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-2">
+            <%= render "shared/sidenav" %>
+        </div>
+
+        <div class="col-md-offset-1 col-sm-6">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <h3 class="text-center">课程信息</h3>
+                </div>
+                <div class="panel-body">
+
+                    <%= form_for @course, html: {class: 'form-horizontal', role: 'form'} do |f| %>
+
+
+                    <div class="form-group">
+                        <p class="col-sm-2 control-label">
+                            课程名
+                        </p>
+                        <div class="col-sm-9">
+
+
+                            <%= f.label"#{@course.name}" , class: 'control-label'  %>
+
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <p class="col-sm-2 control-label">
+                            课程属性
+                        </p>
+                        <div class="col-sm-9">
+
+                            <%= f.label"#{@course.course_type}" , class: 'control-label' %>
+
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <p class="col-sm-2 control-label">
+                            授课方式
+                        </p>
+                        <div class="col-sm-9">
+
+                            <%= f.label"#{@course.teaching_type}" , class: 'control-label' %>
+
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <p class="col-sm-2 control-label">
+                            考试方式
+                        </p>
+                        <div class="col-sm-9">
+
+                            <%= f.label"#{@course.exam_type}" , class: 'control-label' %>
+
+                        </div>
+                    </div>
+
+
+
+
+                    <div class="form-group">
+                        <p class="col-sm-2 control-label">
+                            教室
+                        </p>
+                        <div class="col-sm-9">
+
+                            <%= f.label"#{@course.class_room}" , class: 'control-label' %>
+
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <p class="col-sm-2 control-label">
+                            上课周数
+                        </p>
+                        <div class="col-sm-9">
+
+                            <%= f.label"#{@course.course_week}" , class: 'control-label' %>
+
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <p class="col-sm-2 control-label">
+                            上课时间
+                        </p>
+                        <div class="col-sm-9">
+
+                            <%= f.label"#{@course.course_time}" , class: 'control-label' %>
+
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <p class="col-sm-2 control-label">
+                            预修课程
+                        </p>
+                        <div class="col-sm-9">
+
+                            <%= f.label "#{@course.pre_course}",class: 'control-label'  %>
+
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <p class="col-sm-2 control-label">
+                            教材
+                        </p>
+                        <div class="col-sm-9">
+
+                            <%= f.label "#{@course.textbook}", class: 'control-label'%>
+
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <p class="col-sm-2 control-label">
+                            教学目的
+                        </p>
+                        <div class="col-sm-9">
+
+                            <%= f.label "#{@course.course_purpose}"  %>
+
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <p class="col-sm-2 control-label">
+                            教师简介
+                        </p>
+                        <div class="col-sm-9">
+
+                            <%= f.label "#{@course.teacher_info}"  %>
+
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <p class="col-sm-2 control-label">
+                            主要内容
+                        </p>
+                        <div class="col-sm-9">
+
+                            <%= f.label "#{@course.course_info}"  %>
+
+                        </div>
+                    </div>
+
+
+
+
+                </div>
+
+
+
+                <%= link_to '确认', list_courses_path, :class => "btn btn-default btn-block" %>
+
+                <% end %>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
