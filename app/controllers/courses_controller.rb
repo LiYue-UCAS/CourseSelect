@@ -95,6 +95,7 @@ class CoursesController < ApplicationController
     flag_code_confilct = false
     while flag_code_confilct==false
       time = Time.now.to_i.to_s[-4,4]
+      @code = "091M"
       @code = @code + time + "H"
       courseAll = Course.find_by_sql("Select count(*) from courses where course_code = '#{@code}'")
       if courseAll != 0
@@ -113,13 +114,13 @@ class CoursesController < ApplicationController
       flash={:info => "已成功开通此课程"}
 
 
-   elsif @course.update_attributes(course_params)
-        @course.update_attribute("course_state", "待审核")
-        flash={:info => "更新成功"}
+    elsif @course.update_attributes(course_params)
+      @course.update_attribute("course_state", "待审核")
+      flash={:info => "更新成功"}
 
     else
 
-        flash={:warning => "更新失败"}
+      flash={:warning => "更新失败"}
     end
 
     redirect_to courses_path, flash: flash
@@ -241,7 +242,7 @@ class CoursesController < ApplicationController
     #-----------------规范化数据输出---------------------
 
   end
-   
+
   #学生选课
   #学生选课
   def select
@@ -262,7 +263,7 @@ class CoursesController < ApplicationController
         for j in 1..course_time.length
           if (course_time_new[0]==course_time[0] && course_time_new[i]==course_time[j])
             if(!((start_week > end_week_new) || (end_week < start_week_new)))
-              flag =true
+              conflict_course_flag =true
             end
           end
         end
@@ -270,7 +271,7 @@ class CoursesController < ApplicationController
     end
 
     #student_num < @course.limit_num
-    if(!flag)
+    if(!conflict_course_flag)
       student_num = @course.student_num
       if student_num < @course.limit_num
         current_user.courses<<@course
@@ -351,7 +352,7 @@ class CoursesController < ApplicationController
 
     #防止sql注入，生成sql语句
     sql = "%"+@course_search+"%" #% ：表示任意0个或多个字符。可匹配任意类型和长度的字符
-                              #有些情况下若是中文，请使用两个百分号（%%）表示
+    #有些情况下若是中文，请使用两个百分号（%%）表示
 
     @course = Course.find_by_sql("select * from courses where #{search_colum} like '#{sql}'")
 
@@ -369,22 +370,22 @@ class CoursesController < ApplicationController
 
   def index
 
-   
+
     @course=Course.where("course_state='待审核'") if admin_logged_in?
 
     if teacher_logged_in?
-    @course=current_user.teaching_courses.paginate(:page=>params[:page],:per_page=>5)
+      @course=current_user.teaching_courses.paginate(:page=>params[:page],:per_page=>5)
 
     end
     if student_logged_in?
-    @course=current_user.courses.paginate(:page=>params[:page],:per_page=>5)
-    @courses = current_user.courses
-    @sum_time = 0
-    @sum_credit = 0
-    @courses.each do |courses|
-     @sum_credit += courses.credit.split("/")[1].to_i
-      @sum_time += courses.credit.split("/")[0].to_i
-    end
+      @course=current_user.courses.paginate(:page=>params[:page],:per_page=>5)
+      @courses = current_user.courses
+      @sum_time = 0
+      @sum_credit = 0
+      @courses.each do |courses|
+        @sum_credit += courses.credit.split("/")[1].to_i
+        @sum_time += courses.credit.split("/")[0].to_i
+      end
     end
   end
 
@@ -428,4 +429,4 @@ class CoursesController < ApplicationController
                                    :course_purpose, :pre_course, :textbook, :course_info, :teacher_info)
   end
 
-  end
+end

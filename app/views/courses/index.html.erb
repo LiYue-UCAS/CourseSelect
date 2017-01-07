@@ -67,7 +67,7 @@
             </tbody>
             <% if student_logged_in? %>
                 <%= "你选修的总学分为:" %>
-               <%= @sum_credit %>分
+                <%= @sum_credit %>分
 
                 <br>
                 <%= "你选修的总课时为:" %>
@@ -77,7 +77,7 @@
             <% end %>
           </table>
           <% if student_logged_in? %>
-          <%= will_paginate @course %>
+              <%= will_paginate @course %>
           <% end %>
         </div>
       </div>

@@ -7,53 +7,53 @@
     </div>
 
 
-      <div class="container">
+    <div class="container">
 
-            <div class="panel panel-primary filterable">
-              <div class="panel-heading">
-                <h3 class="panel-title">修改用户信息</h3>
+      <div class="panel panel-primary filterable">
+        <div class="panel-heading">
+          <h3 class="panel-title">修改用户信息</h3>
 
-              </div>
-              <div class="panel-body">
+        </div>
+        <div class="panel-body">
 
-                  <div class="col-md-1 text-right"><font size="3">姓名</font></div>
-                  <div class="col-md-2">
-                    <%= text_field_tag :name %>
-                  </div>
-                    <div class="col-md-3">
-                    <%= link_to "确定", submitpass_user_path(current_user), class: "btn btn-sm btn-primary" %>
+          <div class="col-md-1 text-right"><font size="3">姓名</font></div>
+          <div class="col-md-2">
+            <%= text_field_tag :name %>
+          </div>
+          <div class="col-md-3">
+            <%= link_to "确定", submitpass_user_path(current_user), class: "btn btn-sm btn-primary" %>
 
-                    </div>
+          </div>
 
 
 
-              </div>
+        </div>
+      </div>
+
+      <!-- Modal -->
+      <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+              <h4 class="modal-title" id="myModalLabel">修改用户信息</h4>
             </div>
 
-            <!-- Modal -->
-            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-              <div class="modal-dialog">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                    <h4 class="modal-title" id="myModalLabel">修改用户信息</h4>
-                  </div>
 
 
+            <div class="panel-body">
 
-                  <div class="panel-body">
 
+            </div>
 
-                  </div>
-
-                </div><!-- /.modal-content -->
-              </div><!-- /.modal-dialog -->
-            </div><!-- /.modal -->
+          </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+      </div><!-- /.modal -->
 
 
 
 
 
+    </div>
   </div>
 </div>
-  </div>

@@ -6,35 +6,35 @@
       </div>
       <div class="panel-body">
 
-<%= form_for :session, url: submitpass_user_path, method: :get,html: {class: 'form-horizontal', role: 'form'} do |f| %>
+        <%= form_for :session, url: submitpass_user_path, method: :get,html: {class: 'form-horizontal', role: 'form'} do |f| %>
 
-    <div class="form-group">
-      <%= f.label "用户名", class: 'col-sm-3 control-label' %>
-      <div class="col-sm-9">
-        <div class="input-group">
-          <div class="input-group-addon"><span class="glyphicon glyphicon-envelope"></span></div>
-          <%= f.email_field :email, class: 'form-control', placeholder: "输入有效的邮箱" %>
-        </div>
-      </div>
-    </div>
-
-
-    <div class="form-group">
-      <%= f.label "密码", class: 'col-sm-3 control-label' %>
-      <div class="col-sm-9">
-        <div class="input-group">
-          <div class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></div>
-          <%= f.password_field :password, class: 'form-control', placeholder: "输入密码" %>
-        </div>
-      </div>
-    </div>
+            <div class="form-group">
+              <%= f.label "用户名", class: 'col-sm-3 control-label' %>
+              <div class="col-sm-9">
+                <div class="input-group">
+                  <div class="input-group-addon"><span class="glyphicon glyphicon-envelope"></span></div>
+                  <%= f.email_field :email, class: 'form-control', placeholder: "输入有效的邮箱" %>
+                </div>
+              </div>
+            </div>
 
 
+            <div class="form-group">
+              <%= f.label "密码", class: 'col-sm-3 control-label' %>
+              <div class="col-sm-9">
+                <div class="input-group">
+                  <div class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></div>
+                  <%= f.password_field :password, class: 'form-control', placeholder: "输入密码" %>
+                </div>
+              </div>
+            </div>
 
-    <%= f.submit '更改', class: "btn btn-primary btn-block" %>
-    <%= link_to '取消', courses_path, :class => "btn btn-default btn-block" %>
 
-<% end %>
+
+            <%= f.submit '更改', class: "btn btn-primary btn-block" %>
+            <%= link_to '取消', courses_path, :class => "btn btn-default btn-block" %>
+
+        <% end %>
 
       </div>
     </div>

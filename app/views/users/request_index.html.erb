@@ -28,15 +28,15 @@
                   <td><%= course.teacher.name %></td>
                   <td><%= course.course_state %></td>
                   <% if (course.course_state != "agree" && course.course_state!="disagree") %>
-                    <td><%= @admin.name %></td>
+                      <td><%= @admin.name %></td>
                   <% else %>
-                    <td><%= "其他人" %></td>
+                      <td><%= "其他人" %></td>
                   <% end %>
 
                   <% if (course.course_state != "agree" && course.course_state!="disagree") %>
-                    <td><%= link_to "处理请求", do_request_user_url(course), class: 'btn btn-xs btn-info' %></td>
+                      <td><%= link_to "处理请求", do_request_user_url(course), class: 'btn btn-xs btn-info' %></td>
                   <% else %>
-                    <td><%= link_to "查看请求处理", open_course_path(course), class:'btn btn-xs btn-warning'%></td>
+                      <td><%= link_to "查看请求处理", open_course_path(course), class:'btn btn-xs btn-warning'%></td>
                   <% end %>
                 </tr>
             <% end %>

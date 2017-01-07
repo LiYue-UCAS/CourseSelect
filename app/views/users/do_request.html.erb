@@ -1,169 +1,168 @@
 <!--<html>-->
-  <head>
-    <script>
-      function create_code(){
-        //var code_text = document.getElementById("course_code");
-        //var code_button = document.getElementById("course_code_button");
-        var day = Date.parse(new Date());
-        document.getElementById("course_code").value = "<%=@code %>";
-      }
-      </script>
-  </head>
-  <body>
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-sm-2">
-        <%= render "shared/sidenav" %>
-      </div>
+<head>
+  <script>
+    function create_code(){
+      //var code_text = document.getElementById("course_code");
+      //var code_button = document.getElementById("course_code_button");
+      var day = Date.parse(new Date());
+      document.getElementById("course_code").value = "<%=@code %>";
+    }
+  </script>
+</head>
+<body>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-2">
+      <%= render "shared/sidenav" %>
+    </div>
 
-      <div class="col-md-offset-1 col-sm-6">
-        <div class="panel panel-success">
-          <div class="panel-heading">
-            <% if @course.course_state == "processing_open" %>
-                <h3 class="text-center">处理开放课程请求:<%= @course.name %></h3>
-            <% end %>
-            <% if @course.course_state == "processing_close" %>
-                <h3 class="text-center">处理关闭课程请求: <%= @course.name %></h3>
-            <% end %>
-          </div>
-          <div class="panel-body">
-            <div class="row">
-              <div class="col-sm-offset-3 col-sm-6">
-                <div class="panel panel-info">
-                  <div class="panel-heading">
-                    <h4>查看与编辑课程信息</h4>
-                  </div>
-                  <div class="panel-body">
+    <div class="col-md-offset-1 col-sm-6">
+      <div class="panel panel-success">
+        <div class="panel-heading">
+          <% if @course.course_state == "processing_open" %>
+              <h3 class="text-center">处理开放课程请求:<%= @course.name %></h3>
+          <% end %>
+          <% if @course.course_state == "processing_close" %>
+              <h3 class="text-center">处理关闭课程请求: <%= @course.name %></h3>
+          <% end %>
+        </div>
+        <div class="panel-body">
+          <div class="row">
+            <div class="col-sm-offset-3 col-sm-6">
+              <div class="panel panel-info">
+                <div class="panel-heading">
+                  <h4>查看与编辑课程信息</h4>
+                </div>
+                <div class="panel-body">
 
-                    <%= form_for @course,url: {action: "do_request_update"}, html: {class: 'form-horizontal', role: 'form'} do |f| %>
-                        <%= render 'shared/error_messages', :object => @course %>
+                  <%= form_for @course,url: {action: "do_request_update"}, html: {class: 'form-horizontal', role: 'form'} do |f| %>
+                      <%= render 'shared/error_messages', :object => @course %>
 
-                        <div class="form-group">
-                          <%= f.label "课程编号", class: 'col-sm-4 control-label' %>
-                          <div class="col-sm-9">
-                            <div class="input-group">
-                              <div class="input-group-addon"><span class="glyphicon glyphicon-arrow-right"></span></div>
-                              <input type="text" class="form-control" id="course_code" name="course_code" value="请输入课程编号">
-                              <input type="button" id="course_code_button" name="course_code_button" value="生成课程编号" onclick="create_code()" >
-                            </div>
+                      <div class="form-group">
+                        <%= f.label "课程编号", class: 'col-sm-4 control-label' %>
+                        <div class="col-sm-9">
+                          <div class="input-group">
+                            <div class="input-group-addon"><span class="glyphicon glyphicon-arrow-right"></span></div>
+                            <input type="text" class="form-control" id="course_code" name="course_code" value="请输入课程编号">
+                            <input type="button" id="course_code_button" name="course_code_button" value="生成课程编号" onclick="create_code()" >
                           </div>
                         </div>
+                      </div>
 
-                        <div class="form-group">
-                          <%= f.label "课程名", class: 'col-sm-4 control-label' %>
-                          <div class="col-sm-9">
-                            <div class="input-group">
-                              <div class="input-group-addon"><span class="glyphicon glyphicon-arrow-right"></span></div>
-                              <%= f.label @course.name, class: 'form-control', placeholder: "输入课程名" %>
-                            </div>
+                      <div class="form-group">
+                        <%= f.label "课程名", class: 'col-sm-4 control-label' %>
+                        <div class="col-sm-9">
+                          <div class="input-group">
+                            <div class="input-group-addon"><span class="glyphicon glyphicon-arrow-right"></span></div>
+                            <%= f.label @course.name, class: 'form-control', placeholder: "输入课程名" %>
                           </div>
                         </div>
+                      </div>
 
-                        <div class="form-group">
-                          <%= f.label "课程属性", class: 'col-sm-4 control-label' %>
-                          <div class="col-sm-9">
-                            <div class="input-group">
-                              <div class="input-group-addon"><span class="glyphicon glyphicon-arrow-right"></span></div>
-                              <%= f.label @course.course_type, class: 'form-control', placeholder: "输入课程属性" %>
-                            </div>
+                      <div class="form-group">
+                        <%= f.label "课程属性", class: 'col-sm-4 control-label' %>
+                        <div class="col-sm-9">
+                          <div class="input-group">
+                            <div class="input-group-addon"><span class="glyphicon glyphicon-arrow-right"></span></div>
+                            <%= f.label @course.course_type, class: 'form-control', placeholder: "输入课程属性" %>
                           </div>
                         </div>
+                      </div>
 
-                        <div class="form-group">
-                          <%= f.label "授课方式", class: 'col-sm-4 control-label' %>
-                          <div class="col-sm-9">
-                            <div class="input-group">
-                              <div class="input-group-addon"><span class="glyphicon glyphicon-arrow-right"></span></div>
-                              <%= f.label @course.teaching_type, class: 'form-control', placeholder: "输入授课方式" %>
-                            </div>
+                      <div class="form-group">
+                        <%= f.label "授课方式", class: 'col-sm-4 control-label' %>
+                        <div class="col-sm-9">
+                          <div class="input-group">
+                            <div class="input-group-addon"><span class="glyphicon glyphicon-arrow-right"></span></div>
+                            <%= f.label @course.teaching_type, class: 'form-control', placeholder: "输入授课方式" %>
                           </div>
                         </div>
+                      </div>
 
-                        <div class="form-group">
-                          <%= f.label "考试方式", class: 'col-sm-4 control-label' %>
-                          <div class="col-sm-9">
-                            <div class="input-group">
-                              <div class="input-group-addon"><span class="glyphicon glyphicon-arrow-right"></span></div>
-                              <%= f.label @course.exam_type, class: 'form-control', placeholder: "输入考试方式" %>
-                            </div>
+                      <div class="form-group">
+                        <%= f.label "考试方式", class: 'col-sm-4 control-label' %>
+                        <div class="col-sm-9">
+                          <div class="input-group">
+                            <div class="input-group-addon"><span class="glyphicon glyphicon-arrow-right"></span></div>
+                            <%= f.label @course.exam_type, class: 'form-control', placeholder: "输入考试方式" %>
                           </div>
                         </div>
+                      </div>
 
-                        <div class="form-group">
-                          <%= f.label "限选人数", class: 'col-sm-4 control-label' %>
-                          <div class="col-sm-9">
-                            <div class="input-group">
-                              <div class="input-group-addon"><span class="glyphicon glyphicon-arrow-right"></span></div>
-                              <%= f.label @course.limit_num, class: 'form-control', placeholder: "输入限选人数" %>
-                            </div>
+                      <div class="form-group">
+                        <%= f.label "限选人数", class: 'col-sm-4 control-label' %>
+                        <div class="col-sm-9">
+                          <div class="input-group">
+                            <div class="input-group-addon"><span class="glyphicon glyphicon-arrow-right"></span></div>
+                            <%= f.label @course.limit_num, class: 'form-control', placeholder: "输入限选人数" %>
                           </div>
                         </div>
+                      </div>
 
-                        <div class="form-group">
-                          <%= f.label "课时学分", class: 'col-sm-4 control-label' %>
-                          <div class="col-sm-9">
-                            <div class="input-group">
-                              <div class="input-group-addon"><span class="glyphicon glyphicon-arrow-right"></span></div>
-                              <%= f.label @course.credit, class: 'form-control'%>
-                            </div>
+                      <div class="form-group">
+                        <%= f.label "课时学分", class: 'col-sm-4 control-label' %>
+                        <div class="col-sm-9">
+                          <div class="input-group">
+                            <div class="input-group-addon"><span class="glyphicon glyphicon-arrow-right"></span></div>
+                            <%= f.label @course.credit, class: 'form-control'%>
                           </div>
                         </div>
+                      </div>
 
 
-                        <div class="form-group">
-                          <%= f.label "教室", class: 'col-sm-4 control-label' %>
-                          <div class="col-sm-9">
-                            <div class="input-group">
-                              <div class="input-group-addon"><span class="glyphicon glyphicon-arrow-right"></span></div>
-                              <%= f.label @course.class_room, class: 'form-control', placeholder: "输入教室" %>
+                      <div class="form-group">
+                        <%= f.label "教室", class: 'col-sm-4 control-label' %>
+                        <div class="col-sm-9">
+                          <div class="input-group">
+                            <div class="input-group-addon"><span class="glyphicon glyphicon-arrow-right"></span></div>
+                            <%= f.label @course.class_room, class: 'form-control', placeholder: "输入教室" %>
 
-                              <% if @flag_conflict == true %>
-                                  <div style="color:#ff0000">有冲突</div>
-                              <% end %>
-                            </div>
+                            <% if @flag_conflict == true %>
+                                <div style="color:#ff0000">有冲突</div>
+                            <% end %>
                           </div>
                         </div>
+                      </div>
 
-                        <div class="form-group">
-                          <%= f.label "上课周数", class: 'col-sm-4 control-label' %>
-                          <div class="col-sm-9">
-                            <div class="input-group">
-                              <div class="input-group-addon"><span class="glyphicon glyphicon-arrow-right"></span></div>
-                              <%= f.label @course.course_week, class: 'form-control', placeholder: "输入课时学分" %>
-                            </div>
+                      <div class="form-group">
+                        <%= f.label "上课周数", class: 'col-sm-4 control-label' %>
+                        <div class="col-sm-9">
+                          <div class="input-group">
+                            <div class="input-group-addon"><span class="glyphicon glyphicon-arrow-right"></span></div>
+                            <%= f.label @course.course_week, class: 'form-control', placeholder: "输入课时学分" %>
                           </div>
                         </div>
+                      </div>
 
-                        <div class="form-group">
-                          <%= f.label "上课时间", class: 'col-sm-4 control-label' %>
-                          <div class="col-sm-9">
-                            <div class="input-group">
-                              <div class="input-group-addon"><span class="glyphicon glyphicon-arrow-right"></span></div>
-                              <%= f.label @course.course_time, class: 'form-control', placeholder: "输入课时学分" %>
-                            </div>
+                      <div class="form-group">
+                        <%= f.label "上课时间", class: 'col-sm-4 control-label' %>
+                        <div class="col-sm-9">
+                          <div class="input-group">
+                            <div class="input-group-addon"><span class="glyphicon glyphicon-arrow-right"></span></div>
+                            <%= f.label @course.course_time, class: 'form-control', placeholder: "输入课时学分" %>
                           </div>
                         </div>
+                      </div>
 
-                        <div class="form-group">
-                          <%= f.label "处理请求", class: 'col-sm-4 control-label' %>
-                          <div class="col-sm-9">
-                            <div class="input-group">
-                              <div class="input-group-addon"><span class="glyphicon glyphicon-arrow-right"></span></div>
-                              <select id="request_type" name="request_type">
-                                <option value="agree" selected="selected">同意</option>
-                                <option value="disagree">不同意</option>
-                              </select>
-                            </div>
+                      <div class="form-group">
+                        <%= f.label "处理请求", class: 'col-sm-4 control-label' %>
+                        <div class="col-sm-9">
+                          <div class="input-group">
+                            <div class="input-group-addon"><span class="glyphicon glyphicon-arrow-right"></span></div>
+                            <select id="request_type" name="request_type">
+                              <option value="agree" selected="selected">同意</option>
+                              <option value="disagree">不同意</option>
+                            </select>
                           </div>
                         </div>
+                      </div>
 
-                        <!--<input type="hidden" name="course_state" id="course_state" value="processing">-->
+                      <!--<input type="hidden" name="course_state" id="course_state" value="processing">-->
 
-                        <%= f.submit '提交', class: "btn btn-success btn-block" %>
-                        <%= link_to '取消', courses_path, :class => "btn btn-default btn-block" %>
+                      <%= f.submit '提交', class: "btn btn-success btn-block" %>
+                      <%= link_to '取消', courses_path, :class => "btn btn-default btn-block" %>
 
-                    <% end %>
-                  </div>
+                  <% end %>
                 </div>
               </div>
             </div>
@@ -172,6 +171,7 @@
       </div>
     </div>
   </div>
-  </body>
+</div>
+</body>
 <!--</html>-->
 

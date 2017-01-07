@@ -23,18 +23,15 @@ Rails.application.routes.draw do
       get :quit
       get :open
       get :close
-
       get :agree
       get :adminedit
       get :disagree
-
       get :create_course_code
       get :courseinfo
 
     end
     collection do
       get :list
-      get :search1
 
       get :search
 
