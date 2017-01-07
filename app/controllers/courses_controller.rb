@@ -14,6 +14,37 @@ class CoursesController < ApplicationController
   def create
     @course = Course.new(course_params)
     @course.course_state = "processing_open"
+
+    #-----------------规范化数据输入-------------------------
+    @course.class_room = "J"+@course.class_room[1,@course.class_room.length-1]  #规范化教室数据
+    @course.course_week = @course.course_week[1,@course.course_week.length-2]   #规范化上课周数数据
+
+    case @course.course_time[1]
+      when "一" then
+        @course.course_time[1] = "1"
+      when "二" then
+        @course.course_time[1] = "2"
+      when "三" then
+        @course.course_time[1] = "3"
+      when "四" then
+        @course.course_time[1] = "4"
+      when "五" then
+        @course.course_time[1] = "5"
+      when "六" then
+        @course.course_time[1] = "6"
+      when "日" then
+        @course.course_time[1] = "7"
+      else
+        @course.course_time[1] = "1"
+    end
+
+    course_time = @course.course_time[1,@course.course_time.length-3]
+    course_time = course_time[0]+"-"+course_time[2..course_time.length-1]
+    @course.course_time = course_time   #规范化上课时间数据
+
+    #render plain: @course.course_time.inspect
+    #-----------------规范化数据输入-------------------------
+
     if @course.save
       current_user.teaching_courses<<@course
 
@@ -24,19 +55,50 @@ class CoursesController < ApplicationController
       flash[:warning] = "信息填写有误,请重试"
       render 'new'
     end
+
   end
 
   def edit
     @course=Course.find_by_id(params[:id])
     courses = Course.all
 
-    flag = false
-    while flag==false
+    #-----------------规范化数据输出---------------------
+    #规范化教室数据
+    @course.class_room[0] = "教"
+    #规范化上课周数数据
+    @course.course_week = "第"+@course.course_week+"周"
+    #规范化上课时间数据
+    case @course.course_time[0]
+      when "1" then
+        @course.course_time[0] = "一"
+      when "2" then
+        @course.course_time[0] = "二"
+      when "3" then
+        @course.course_time[0] = "三"
+      when "4" then
+        @course.course_time[0] = "四"
+      when "5" then
+        @course.course_time[0] = "五"
+      when "6" then
+        @course.course_time[0] = "六"
+      when "7" then
+        @course.course_time[0] = "日"
+      else
+        @course.course_time[0] = "一"
+    end
+    @course.course_time[1] = "（"
+    @course.course_time = "周"+@course.course_time+"）节"
+
+    #render plain: @course.course_time.inspect
+    #-----------------规范化数据输出---------------------
+
+    flag_code_confilct = false
+    while flag_code_confilct==false
       time = Time.now.to_i.to_s[-4,4]
-      @code = "091M"+time+"H"
+      @code = @code + time + "H"
       courseAll = Course.find_by_sql("Select count(*) from courses where course_code = '#{@code}'")
       if courseAll != 0
-        flag = true
+        flag_code_confilct= true
       end
     end
   end
@@ -44,18 +106,22 @@ class CoursesController < ApplicationController
   def update
     @course = Course.find_by_id(params[:id])
 
-    if admin_logged_in? && @course.update_attributes(course_params)
-    @course.update_attribute("course_state", "已通过")
-    flash={:info => "已成功开通此课程"}
+    #render plain: @course.course_code.inspect
 
-    elsif @course.update_attributes(course_params)
-      @course.update_attribute("course_state", "待审核")
-      flash={:info => "更新成功"}
+    if admin_logged_in? && @course.update_attribute("course_code",course_params[:course_code])
+      @course.update_attribute("course_state", "已通过")
+      flash={:info => "已成功开通此课程"}
 
-      else
 
-      flash={:warning => "更新失败"}
+   elsif @course.update_attributes(course_params)
+        @course.update_attribute("course_state", "待审核")
+        flash={:info => "更新成功"}
+
+    else
+
+        flash={:warning => "更新失败"}
     end
+
     redirect_to courses_path, flash: flash
   end
 
@@ -114,9 +180,8 @@ class CoursesController < ApplicationController
         @course_open<< course #追加，写进数组
       end
     end
-    def courseinfo
-      @course = Course.find_by_id(params[:id])
-    end
+
+
     @course = @course_open
 
 
@@ -141,6 +206,41 @@ class CoursesController < ApplicationController
     end
     #---------------------------------------------------------------------
   end
+
+  def courseinfo
+    @course = Course.find_by_id(params[:id])
+
+    #-----------------规范化数据输出---------------------
+    #规范化教室数据
+    @course.class_room[0] = "教"
+    #规范化上课周数数据
+    @course.course_week = "第"+@course.course_week+"周"
+    #规范化上课时间数据
+    case @course.course_time[0]
+      when "1" then
+        @course.course_time[0] = "一"
+      when "2" then
+        @course.course_time[0] = "二"
+      when "3" then
+        @course.course_time[0] = "三"
+      when "4" then
+        @course.course_time[0] = "四"
+      when "5" then
+        @course.course_time[0] = "五"
+      when "6" then
+        @course.course_time[0] = "六"
+      when "7" then
+        @course.course_time[0] = "日"
+      else
+        @course.course_time[0] = "一"
+    end
+    @course.course_time[1] = "（"
+    @course.course_time = "周"+@course.course_time+"）节"
+
+    #render plain: @course.course_time.inspect
+    #-----------------规范化数据输出---------------------
+
+  end
    
   #学生选课
   #学生选课
@@ -149,7 +249,7 @@ class CoursesController < ApplicationController
     course_weeks_new = @course.course_week.split("-")
     start_week_new = course_weeks_new[0].to_i
     end_week_new = course_weeks_new[1].to_i
-    flag = false
+    conflict_course_flag = false
     course_time_new = @course.course_week.split("-")  #周几-几-几-几节课
 
     current_user.courses.each do |course|
@@ -209,12 +309,14 @@ class CoursesController < ApplicationController
   end
 
 
-  def sousuo
+  def search
     #获取想要查询的字符串
     @course_search = params["course_search"]
     @search_type = params["search_type"]
 
     #生成数据表字段名
+
+=begin
     if @search_type == "课程名称"
         search_colum = "name"
       elsif @search_type == "课程编号"
@@ -231,7 +333,21 @@ class CoursesController < ApplicationController
         search_colum = "exam_type"
       else
         search_colum = "name"
-      end
+    end
+=end
+
+    case @search_type
+      when "课程名称" then
+        search_colum = "name"
+      when "课程编号" then
+        search_colum = "course_code"
+      when "课程类型" then
+        search_colum = "course_type"
+      when "课程学分" then
+        search_colum = "credit"
+      else
+        search_colum = "name"
+    end
 
     #防止sql注入，生成sql语句
     sql = "%"+@course_search+"%" #% ：表示任意0个或多个字符。可匹配任意类型和长度的字符
@@ -266,8 +382,8 @@ class CoursesController < ApplicationController
     @sum_time = 0
     @sum_credit = 0
     @courses.each do |courses|
-     @sum_credit += courses.credit[3...4].to_i
-      @sum_time += courses.credit[0...1].to_i
+     @sum_credit += courses.credit.split("/")[1].to_i
+      @sum_time += courses.credit.split("/")[0].to_i
     end
     end
   end
@@ -301,6 +417,13 @@ class CoursesController < ApplicationController
 
   def course_params
     params.require(:course).permit(:course_code, :name, :course_type, :teaching_type, :exam_type,
+                                   :credit, :limit_num, :class_room, :course_time, :course_week,
+                                   :course_purpose, :pre_course, :textbook, :course_info, :teacher_info)
+  end
+
+  def course_params_new
+    course_code = params[:course_code]
+    params.require(:course).permit(course_code, :name, :course_type, :teaching_type, :exam_type,
                                    :credit, :limit_num, :class_room, :course_time, :course_week,
                                    :course_purpose, :pre_course, :textbook, :course_info, :teacher_info)
   end

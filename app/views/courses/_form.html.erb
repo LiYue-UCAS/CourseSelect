@@ -69,7 +69,7 @@
       <div class="col-sm-9">
         <div class="input-group">
           <div class="input-group-addon"><span class="glyphicon glyphicon-arrow-right"></span></div>
-          <%= f.text_field :credit, class: 'form-control', placeholder: "输入课时学分" %>
+          <%= f.text_field :credit, class: 'form-control', placeholder: "格式为：60/3.0" %>
         </div>
       </div>
     </div>
@@ -80,7 +80,7 @@
       <div class="col-sm-9">
         <div class="input-group">
           <div class="input-group-addon"><span class="glyphicon glyphicon-arrow-right"></span></div>
-          <%= f.text_field :class_room, class: 'form-control', placeholder: "输入教室" %>
+          <%= f.text_field :class_room, class: 'form-control', placeholder: "格式为：教1-101" %>
         </div>
       </div>
     </div>
@@ -90,7 +90,7 @@
       <div class="col-sm-9">
         <div class="input-group">
           <div class="input-group-addon"><span class="glyphicon glyphicon-arrow-right"></span></div>
-          <%= f.text_field :course_week, class: 'form-control', placeholder: "输入课时学分" %>
+          <%= f.text_field :course_week, class: 'form-control', placeholder: "格式为：第2-21周" %>
         </div>
       </div>
     </div>
@@ -100,7 +100,7 @@
       <div class="col-sm-9">
         <div class="input-group">
           <div class="input-group-addon"><span class="glyphicon glyphicon-arrow-right"></span></div>
-          <%= f.text_field :course_time, class: 'form-control', placeholder: "输入课时学分" %>
+          <%= f.text_field :course_time, class: 'form-control', placeholder: "格式为：周一（1-2-3）节" %>
         </div>
       </div>
     </div>
@@ -167,7 +167,10 @@
             <div class="input-group">
 
               <div class="input-group-addon"><span class="glyphicon glyphicon-arrow-right"></span></div>
-              <input type="text" class="form-control" id="course_code" name="course_code" value="请输入课程编号">
+              <!--input type="text" class="form-control" id="course_code" name="course_code" value="请输入课程编号"-->
+
+              <%= f.text_area :course_code,id: "course_code" ,class: 'form-control', placeholder: "输code" %>
+
                 </div>
               <input type="button" id="course_code_button" name="course_code_button" value="生成课程编号" onclick="create_code()" >
             </div>

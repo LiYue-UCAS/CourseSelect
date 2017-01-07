@@ -10,7 +10,7 @@
 
         </div>
 
-        <form action="sousuo" method="get">
+        <form action="search" method="get">
 
           <select id="search_type" name="search_type">
             <option value="课程名称" selected="selected">课程名称</option>
@@ -42,6 +42,7 @@
               <th>考试方式</th>
               <th>主讲教师</th>
               <th>课程信息</th>
+              <th>操作</th>
 
             </tr>
             </thead>
@@ -53,6 +54,7 @@
 
 
                   <td><%= i+1 %></td>
+                 <% teacher_name =  @course[i].teacher.name %>
                   <td><%= @course[i].course_code %></td>
                   <td><%= @course[i].name %></td>
                   <td><%= @course[i].credit %></td>
@@ -61,20 +63,20 @@
                   <td><%= @course[i].course_type %></td>
                   <td><%= @course[i].teaching_type %></td>
                   <td><%= @course[i].exam_type %></td>
-                  <td><%= @course[i].teacher.name %></td>
-                  <td><%= link_to  "查看详细信息",courseinfo_course_path(@course[i]), :class=>"glyphicon" %></td>
+                  <td><%= teacher_name %></td>
+                  <td><%= link_to  "查看",courseinfo_course_path(@course[i]), :class=>"glyphicon" %></td>
                    <% if @course[i].student_num != @course[i].limit_num %>
 
                   <% else %>
-                    <td>课程已满</td>
+                    <td>已满</td>
                   <% end %>
 
                   <% if (@course[i].student_num == @course[i].limit_num) %>
                   <td>
-                    <span style="color:red;">课程已满</span>
+                    <span style="color:red;">已满</span>
                   </td>
                   <% else %>
-                      <td><%= link_to "加入课程", select_course_path(@course[i]), class: 'btn-sm btn-info' %></td>
+                      <td><%= link_to "选课", select_course_path(@course[i]), class: 'btn-sm btn-info' %></td>
                 </tr>
                   <% end %>
             <% end %>

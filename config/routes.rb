@@ -36,7 +36,7 @@ Rails.application.routes.draw do
       get :list
       get :search1
 
-      get :sousuo
+      get :search
 
     end
   end

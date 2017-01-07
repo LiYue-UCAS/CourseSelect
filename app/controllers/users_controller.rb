@@ -66,7 +66,7 @@ class UsersController < ApplicationController
 
 
 
-
+=begin
 #----------------------------admin start-----------------------------------------------
 
   def request_index
@@ -158,7 +158,7 @@ class UsersController < ApplicationController
   end
 
 #----------------------------admin end----------------------------------------------------------
-
+=end
 #----------------------------------- students function--------------------
 
 
